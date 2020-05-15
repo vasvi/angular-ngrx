@@ -1,0 +1,8 @@
+This is a TODO Application which needs the below fetures to be implemented:
+
+1. Reset the textbox value once the "Add" button is clicked.
+2. Add "Delete" button for each of the todo items.
+3. Add "Checkbox" for each of the todo items. On click of the checkbox the text will be striked off.
+4. Align the "Add" button in the same line as the textbox.
+5. Add Validation to the textbox for requried and min-length: 2 and max-length: 50.
+6. There is a console error. Try to fix it.

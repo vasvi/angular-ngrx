@@ -1,0 +1,21 @@
+
+<div class="container">
+	<form #todoForm="ngForm" (submit)="todoSubmit(todoForm.value)">
+		<h1 class="text-center ">Todo App</h1>
+		<div class="form-group" style="display: flex">
+			<input type="text" #todo  class="form-control" placeholder="Add Todo" name="todo" ngModel [minLength]="2" maxlength="50">
+        <button type="button" class="btn btn-primary" (click)="addTodo(todo.value)" >
+          Add
+          </button>
+		</div>
+	</form>
+	<div class="data">
+		<ul class="list-unstyled" *ngIf="todoArray.length">
+			<li *ngFor="let todo of todoArray" [class.done]="todo.completed">
+				<input type="checkbox" (click)="markDone(todo)"/>
+				{{todo.name}}
+				<button class="delTodo" (click)="deleteTodo(todo)">X</button>
+			</li>
+		</ul>
+	</div>
+</div>

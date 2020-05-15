@@ -1,0 +1,43 @@
+
+form, .data ul {
+	max-width: 30em;
+	margin: 4em auto;
+	position: relative;
+    background: #f4f4f4;
+    padding: 2em 3em;
+    overflow: hidden;
+}
+
+form h1{
+    color:#F97300; 
+}
+
+.data{
+    margin-top: 1em;
+    text-align: center;
+}
+
+.data li{
+ background: #fff;
+ border-left: 4px solid #F97300;
+ padding: 1em;
+ margin: 1em auto;
+ color: #666;
+ font-family: "Raleway";
+}
+
+.data li.done {
+    text-decoration: line-through;
+}
+
+.data li i{
+    float: right;
+    color: #888;
+    cursor: pointer;
+}
+
+.data .delTodo {
+  margin: 10px;
+  padding: 5px;
+  background-color: red;
+}
