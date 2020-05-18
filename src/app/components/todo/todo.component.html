@@ -9,8 +9,8 @@
           </button>
 		</div>
 	</form>
-	<div class="data">
-		<ul class="list-unstyled" *ngIf="todoArray.length">
+	<div class="data" *ngIf="todoArray.length else loading">
+		<ul class="list-unstyled">
 			<li *ngFor="let todo of todoArray" [class.done]="todo.completed">
 				<input type="checkbox" (click)="markDone(todo)"/>
 				{{todo.name}}
@@ -19,3 +19,7 @@
 		</ul>
 	</div>
 </div>
+
+<ng-template #loading style="text-align: center;">
+	Loading data
+</ng-template>

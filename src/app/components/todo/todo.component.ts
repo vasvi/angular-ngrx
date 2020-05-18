@@ -1,42 +1,54 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ToDo } from '../../model/todo.model';
+import { select, Store} from '@ngrx/store';
+import { ToDoState } from 'src/app/reducers/todos.state';
+import { Subscription, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import * as TodoActions from '../../actions/todos.actions';
 
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.css']
 })
-export class TodoComponent implements OnInit {
+export class TodoComponent implements OnInit, OnDestroy {
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private store: Store<{todos: ToDoState}>
   ) {}
-
+  
+  todos$: Observable<ToDoState>;
   todoArray;
-  todo: {
-    name,
-    completed
-  };
+  loading;
+  loadTodosSubs: Subscription
   @ViewChild('todoForm') todoForm;
 
   ngOnInit() {
-    this.fetchTodos();
-  }
+    this.todos$ = this.store.pipe(select('todos'))
 
-  fetchTodos = () => {
-    this.http.get('http://localhost:8000/api/todos').subscribe((data) => {
-      this.todoArray = data;
-    },
-    err => console.log('error'))
+    this.loadTodosSubs = this.todos$
+      .pipe(
+        map(x => {
+          this.loading = x.loading;
+          this.todoArray = x.Todos;
+        })
+      ).subscribe()
+
+    // Dispatch action to load todos
+    this.store.dispatch(TodoActions.loadTodo());
   }
 
   addTodo(value) {
     if (value !== "") {
-      let todo = {
-        name: value,
+      let todo: ToDo = {
+        title: value,
         completed: false
       }
+      // Dispatch action to create a new Todo
+      this.store.dispatch(TodoActions.createTodo(todo));
 
-      this.todoArray.push(todo);
+      //this.todoArray.push(todo);
       this.todoForm.reset();
     } else {
       alert('Field required **');
@@ -55,9 +67,7 @@ export class TodoComponent implements OnInit {
       if (todoItem.name === todo.name) {
         todoItem.completed = !todoItem.completed;
       }
-    })
-
-    
+    })    
   }
 
   todoSubmit(value: any) {
@@ -70,6 +80,12 @@ export class TodoComponent implements OnInit {
       this.todoForm.reset();
     } else {
       alert('Field required **');
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.loadTodosSubs) {
+      this.loadTodosSubs.unsubscribe();
     }
   }
 }
