@@ -19,14 +19,15 @@ const reducer = createReducer(
             TodoError: error
         }
     }),
-    on(TodoActions.createTodo, (state: ToDoState, todo: ToDo) => {
+    on(TodoActions.createTodo, (state: ToDoState) => {
         return {...state,
-            Todos: [...state.Todos, todo],
+            Todos: [...state.Todos],
             TodoError: null,
             loading: true
         }
     }),
     on(TodoActions.createTodoSuccess, (state: ToDoState, {payload}) => {
+        console.log(payload);
         return {...state,
             Todos: [...state.Todos, payload],
             TodoError: null,

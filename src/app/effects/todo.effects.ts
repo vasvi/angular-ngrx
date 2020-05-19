@@ -32,5 +32,26 @@ export class TodoEffects {
                 return of(TodoActions.loadTodoFailure(error))
             })
         )
-    )
+    );
+
+    createTodo$: Observable<Action> = createEffect(() =>
+        this.action$.pipe(
+            ofType(TodoActions.createTodo),
+            mergeMap(
+                (action) => (
+                console.log(action.payload),
+                this.http
+                .post(this.apiUrl, action.payload, {
+                  headers: { 'Content-Type': 'application/json' }
+                }).pipe(
+                    map((data: ToDo) => {
+                        console.log(data);
+                        return TodoActions.createTodoSuccess({payload: data})
+                })
+        ))),
+            catchError((error: Error) => {
+                return of(TodoActions.createTodoFailure)
+            })
+        )
+    );
 }

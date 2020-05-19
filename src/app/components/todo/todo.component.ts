@@ -46,7 +46,9 @@ export class TodoComponent implements OnInit, OnDestroy {
         completed: false
       }
       // Dispatch action to create a new Todo
-      this.store.dispatch(TodoActions.createTodo(todo));
+      this.store.dispatch(TodoActions.createTodo({
+        payload: todo
+      }));
 
       //this.todoArray.push(todo);
       this.todoForm.reset();
