@@ -54,4 +54,20 @@ export class TodoEffects {
             })
         )
     );
+
+    deleteTodo$: Observable<Action> = createEffect(() =>
+        this.action$.pipe(
+            ofType(TodoActions.deleteTodo),
+            mergeMap(
+                (action) => (
+                    this.http.delete(`${this.apiUrl}/${action.payload.id}`)
+                    .pipe(map((data) => {
+                        return TodoActions.deleteTodoSuccess({payload: action.payload})
+                    })
+            ))),
+            catchError((error: Error) => {
+                return of(TodoActions.createTodoFailure)
+            }
+        ))
+    );
 }

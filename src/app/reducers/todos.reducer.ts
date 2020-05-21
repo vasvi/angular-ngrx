@@ -40,7 +40,30 @@ const reducer = createReducer(
             TodoError: error,
             loading: false
         }
-    })
+    }),
+    on(TodoActions.deleteTodo, (state: ToDoState) => {
+        return {...state,
+            Todos: [...state.Todos],
+            TodoError: null,
+            loading: true
+        }
+    }),
+    on(TodoActions.deleteTodoSuccess, (state: ToDoState, payload) => {
+        console.log(payload);
+        return {...state,
+            Todos: state.Todos.filter((todo) => todo.id !== payload.payload.id),
+            TodoError: null,
+            loading: false
+
+        }
+    }),
+    on(TodoActions.deleteTodoFailure, (state: ToDoState, error) => {
+        return {...state,
+            Todos: [...state.Todos],
+            TodoError: error,
+            loading: false
+        }
+    }),
 )
 
 export function TodoReducer(state: ToDoState | undefined, action: Action) {

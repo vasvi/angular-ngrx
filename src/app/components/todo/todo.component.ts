@@ -25,8 +25,10 @@ export class TodoComponent implements OnInit, OnDestroy {
   @ViewChild('todoForm') todoForm;
 
   ngOnInit() {
+    // Select from state
     this.todos$ = this.store.pipe(select('todos'))
 
+    // Subscribe to state change
     this.loadTodosSubs = this.todos$
       .pipe(
         map(x => {
@@ -60,7 +62,11 @@ export class TodoComponent implements OnInit, OnDestroy {
   deleteTodo(todo)  {
     console.log(todo);
     console.log('before', this.todoArray);
-    this.todoArray = this.todoArray.filter(todoItem => todoItem.name !== todo.name);
+    //this.todoArray = this.todoArray.filter(todoItem => todoItem.name !== todo.name);
+    this.store.dispatch(TodoActions.deleteTodo({
+      payload: todo
+    }));
+    
     console.log('After', this.todoArray);
   }
 
